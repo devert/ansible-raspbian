@@ -1,0 +1,6 @@
+# Perform full apt update+upgrade
+update_apt_packages: yes
+# Set global locale
+locale: en_US.UTF8
+# Set timezone
+timezone: "America/Chicago"

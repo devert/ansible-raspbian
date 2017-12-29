@@ -1,0 +1,6 @@
+*.retry
+hosts
+wpa_supplicant.conf
+
+# role dependencies
+roles/geerlingguy.raspberry-pi

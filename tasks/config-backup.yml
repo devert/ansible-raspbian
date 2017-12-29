@@ -1,0 +1,8 @@
+- name: check if boot/config.txt.backup already exists
+  stat: path=/boot/config.txt.backup
+  register: config_backup
+
+- name: backup boot/config.txt
+  command: cp /boot/config.txt /boot/config.txt.backup
+  become: yes
+  when: not config_backup.stat.exists
