@@ -1,5 +1,5 @@
 # Perform full apt update+upgrade
-update_apt_packages: yes
+update_apt_packages: no
 # Set global locale
 locale: en_US.UTF8
 # Set timezone

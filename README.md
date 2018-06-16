@@ -7,6 +7,10 @@ Install and configuration for a Raspberry Pi running Raspbian using Ansible
     ```
     sudo raspi-config
     ```
+1. Change the Raspberry Pi SSH password to something other than the default `raspberry`
+    ```
+    passwd
+    ```
 1. Grab the [IP address](https://www.raspberrypi.org/documentation/remote-access/ip-address.md) of your Pi on the network
     ```
     hostname -I
@@ -14,13 +18,14 @@ Install and configuration for a Raspberry Pi running Raspbian using Ansible
 1. [Install Ansible](http://docs.ansible.com/ansible/latest/intro_installation.html) and [Git](https://git-scm.com/book/en/v1/Getting-Started-Installing-Git) on control machine
     ```
     brew install ansible git
+    brew install http://git.io/sshpass.rb
     ```
 1. Clone this repo to your control machine
     ```
     git clone git@github.com:devert/ansible-raspbian.git
     cd ansible-raspbian
     ```
-1. Copy the hosts file and replace `<IP_ADDRESS>` with the IP of your Pi
+1. Copy the hosts file and replace `<IP_ADDRESS>` with the IP of your Pi and `<SSH_PASSWORD>` to what you changed it to earlier
     ```
     cp templates/hosts.example hosts
     ```
@@ -30,5 +35,5 @@ Install and configuration for a Raspberry Pi running Raspbian using Ansible
     ```
 1. Run the playbook
     ```
-    ansible-playbook playbook.yml -i hosts --ask-pass
+    ansible-playbook playbook.yml -i hosts
     ```

@@ -1,12 +1,23 @@
 ---
 - hosts: pi
   remote_user: pi
+  become: yes
   vars_files:
     - vars/main.yml
   tasks:
     - import_tasks: tasks/config-backup.yml
       tags: config
+    
+    - import_tasks: tasks/expand-filesystem.yml
+      tags: system
 
-    # - import_tasks: tasks/apt-updates.yml
-    #   when: update_apt_packages
-    #   tags: update
+    - import_tasks: tasks/apt-updates.yml
+      when: update_apt_packages
+      tags: update
+    
+    - import_tasks: tasks/timezone.yml
+      when: timezone is defined
+      tags: system
+  handlers:
+    - import_tasks: handlers/reboot.yml
+      tags: system

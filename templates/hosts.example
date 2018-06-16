@@ -1,2 +1,2 @@
 [pi]
-<IP_ADDRESS>
+<IP_ADDRESS> ansible_ssh_user=pi ansible_ssh_pass=<SSH_PASSWORD>
