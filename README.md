@@ -37,3 +37,90 @@ Install and configuration for a Raspberry Pi running Raspbian using Ansible
     ```
     ansible-playbook playbook.yml -i hosts
     ```
+
+# VNC Setup
+1. `sudo raspi-config` > Interface Options > VNC > Enable. Reboot.
+
+2. Generate the password you wish to use for VNC sessions with `vncpasswd -print`
+    ```
+    vncpasswd -print
+
+    Password:
+    Verify:
+    Password=40cca9718ffb8e91d55cf290c3db86d5
+    ```
+
+3. Copy the output of that command (eg. `Password=40cca9718ffb8e91d55cf290c3db86d5`) for the config file.
+
+4. Create and edit the following file here: `/etc/vnc/config.d/common.custom`. Enter the following config:
+    ```
+    Encryption=PreferOn
+    Authentication=VncAuth
+    Password=40cca9718ffb8e91d55cf290c3db86d5
+    ```
+
+5. Restart the vnc service:
+    ```
+    sudo systemctl restart vncserver-x11-serviced
+    ```
+
+6. In OSX Finder `Go > Connect to Server` and enter address `vnc://pi@<IP_ADDRESS>:5900`. Use the password you provided to `vncpasswd` to login.
+
+# Plex Setup
+
+1. Update and upgrade everything
+    ```
+    sudo apt-get update
+    sudo apt-get upgrade
+    ```
+
+2. Ensure you have the HTTPs transport package
+
+    ```
+    sudo apt-get install apt-transport-https
+    ```
+
+3. Add the dev2day repository to your package source list.
+
+    ```
+    wget -O - https://dev2day.de/pms/dev2day-pms.gpg.key | sudo apt-key add -
+    echo "deb https://dev2day.de/pms/ stretch main" | sudo tee /etc/apt/sources.list.d/pms.list
+    ```
+
+4. Update the package list again.
+
+    ```
+    sudo apt-get update
+    ```
+
+5. Install Plex Service Installer
+
+    ```
+    sudo apt-get install -t stretch plexmediaserver-installer
+    ```
+
+6. Change some permissions
+
+    ```
+    # Change to PLEX_MEDIA_SERVER_USER=pi
+    sudo nano /etc/default/plexmediaserver.prev
+
+    # Change ownership of /var/lib/plexmediaserver if necessary
+    chown -R plex:plex /var/lib/plexmediaserver
+
+    # Restart plexmediaserver
+    sudo service plexmediaserver restart
+    sudo service plexmediaserver status
+    ```
+
+7. Ensure Pi has a static IP
+
+    ```
+    hostname -I
+    # Add ip=<IP_ADDRESS> to the bottom of this file
+    sudo nano /boot/cmdline.txt
+    ```
+
+8. Reboot with `sudo reboot`
+
+9. Go to `localhost:32400/web` or `<IP_ADDRESS>:32400/web` to setup Plex Media Server
